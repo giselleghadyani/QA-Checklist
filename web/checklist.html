@@ -5,8 +5,8 @@
 	<form>
 		<div layout="row">
 			<div ng-repeat="item in checklistItems.websiteInfo.subItems">
-				<md-tooltip class="tooltip-full-text"></md-tooltip>
-				<md-text-float label="{{item.name}}" ng-model="item.model" ng-click="showDesc($event, item.name, item.desc)" layout-padding></md-text-float>
+				<md-tooltip class="tooltip-full-text">{{item.desc}}</md-tooltip>
+				<md-text-float label="{{item.name}}" ng-model="item.model" layout-padding></md-text-float>
 			</div>
 		</div>
 	</form>
@@ -16,9 +16,9 @@
 </md-toolbar>
 <md-content class="md-padding">
 	<form>
-		<div layout"row" layout-wrap layout-fill>
+		<div layout"row" layout-wrap>
 			<div ng-repeat="item in checklistItems.pageTests.subItems">
-				<md-text-float label="{{item.name}}" ng-model="item.model" ng-click="showDesc($event, item.name, item.desc)" layout-padding flex></md-text-float>
+				<md-text-float label="{{item.name}}" ng-model="item.model" layout-padding flex></md-text-float>
 			</div>
 		</div>
 	</form>
@@ -31,7 +31,7 @@
 	<form>
 		<div layout="row">
 			<div ng-repeat="item in checklistItems.listManagement.subItems">
-				<md-text-float label="{{item.name}}" ng-model="item.model" ng-click="showDesc($event, item.name, item.desc)" layout-padding></md-text-float>
+				<md-text-float label="{{item.name}}" ng-model="item.model" layout-padding></md-text-float>
 			</div>
 		</div>
 	</form>
