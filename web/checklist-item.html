@@ -3,10 +3,10 @@
 </md-toolbar>
 <md-content class="md-padding">
 	<form>
-		<div layout="row">
-			<div ng-repeat="item in fields.items">
+		<div layout="row" layout-padding layout-wrap>
+			<div ng-repeat="item in fields.items" flex>
 				<md-tooltip class="tooltip-full-text">{{item.desc}}</md-tooltip>
-				<md-text-float label="{{item.name}}" ng-model="item.model" ng-click="showDesc($event, item.name, item.desc)" layout-padding></md-text-float>
+				<md-text-float label="{{item.name}}" ng-model="item.model"></md-text-float>
 			</div>
 		</div>
 	</form>
