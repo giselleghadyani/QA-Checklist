@@ -8,7 +8,7 @@ module.exports = (grunt) ->
 	@config 'watch',
 		options:
 			event: 'all'
-			livereload: '64566'
+			livereload: true
 			livereloadOnError: false
 
 
@@ -18,7 +18,7 @@ module.exports = (grunt) ->
 
 		# Web
 		web:
-			files: '/web/*'
+			files: 'web/*'
 			tasks: []
 
 	@loadNpmTasks 'grunt-contrib-watch'

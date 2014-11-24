@@ -11,3 +11,4 @@
 *.dmp
 ._*
 npm-debug.log
+*.stackdump

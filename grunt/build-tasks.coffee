@@ -7,7 +7,10 @@ module.exports = (grunt) ->
 
 	# Default
 	@registerTask 'default', [
+		'concurrent:servers'
+	]
+
+	@registerTask 'webServer', [
 		'configureRewriteRules'
-		'connect'
-		'watch'
+		'connect:main'
 	]

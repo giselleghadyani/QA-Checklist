@@ -1,0 +1,14 @@
+<md-toolbar md-theme="grey">
+	<h2 class="md-toolbar-tools">{{fields.name}}</h2>
+</md-toolbar>
+<md-content class="md-padding">
+	<form>
+		<div layout="row" layout-padding layout-wrap>
+			<div ng-repeat="item in fields.items" flex>
+				<md-tooltip class="tooltip-full-text">{{item.desc}}</md-tooltip>
+				<md-text-float label="{{item.name}}" ng-model="item.model"></md-text-float>
+			</div>
+		</div>
+	</form>
+	<md-button class="md-raised md-primary" ng-controller="checklistItemsController" ng-click="saveData(fields)">Save (doesn't actually save)</md-button>
+</md-content>
