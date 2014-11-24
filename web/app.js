@@ -18,8 +18,24 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 		})
 })
 
-.controller('checklistController', function($scope) {
+.controller('checklistController', function($scope, $mdDialog, checklistService) {
+	$scope.checklistItems = checklistService
+	$scope.showDesc = function(e, heading, desc) {
+		$mdDialog.show({
+			controller: 'moreInfoController',
+			templateUrl: 'more-info.html',
+			targetEvent: e,
+			locals: {
+				heading: heading,
+				desc: desc
+			}
+		})
+	}
+})
 
+.controller('moreInfoController', function($scope, heading, desc) {
+	$scope.heading = heading
+	$scope.desc = desc
 })
 
 .controller('testController', function($scope) {
@@ -100,15 +116,12 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 				name: 'roi-short',
 				desc: '',
 			}, {
-			{
 				name: 'roi-unsold',
 				desc: '',
 			}, {
-			{
 				name: 'roi-sold',
 				desc: '',
 			}, {
-			{
 				name: 'roi-milbdst',
 				desc: '',
 			},
