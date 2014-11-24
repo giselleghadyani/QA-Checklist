@@ -10,7 +10,7 @@ module.exports = (grunt) ->
 			logConcurrentOutput: true
 
 		servers: [
-			'connect'
+			'webServer'
 			'watch'
 		]
 

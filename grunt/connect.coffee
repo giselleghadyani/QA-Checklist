@@ -17,7 +17,7 @@ module.exports = (grunt) ->
 
 		rules: [
 			from: '/[^\.]+$'
-			to: "/index.html"
+			to: '/index.html'
 		]
 
 		main:
