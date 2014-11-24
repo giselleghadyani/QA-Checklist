@@ -4,9 +4,11 @@
 <md-content class="md-padding">
 	<form>
 		<div layout="row" layout-padding layout-wrap>
-			<div ng-repeat="item in fields.items" flex>
-				<md-tooltip class="tooltip-full-text">{{item.desc}}</md-tooltip>
-				<md-text-float label="{{item.name}}" ng-model="item.model"></md-text-float>
+			<div ng-repeat="item in fields.items">
+				<div flex>
+					<md-tooltip class="tooltip-full-text">{{item.desc}}</md-tooltip>
+					<md-text-float label="{{item.name}}" ng-model="item.model"></md-text-float>
+				</div>
 			</div>
 		</div>
 	</form>
