@@ -35,6 +35,9 @@ angular.module('qaChecklist', [
 })
 
 .controller('checklistItemsController', function($scope) {
+	$scope.data = {}
+	$scope.data.cb1 = true
+	$scope.data.cb2 = false
 	$scope.saveData = function(fields) {
 		console.log('here');
 		console.log(fields)
