@@ -1,8 +1,17 @@
-<md-content md-theme="light-blue-dark">
-	<form style="padding: 20px;">
+<md-content class="md-padding" md-theme="light-blue-dark">
+	<form>
 		<div class="row">
-			<md-text-float label="Title" ng-model="user.title"></md-text-float>
-			<md-text-float label="eMail" ng-model="user.email" type="email"></md-text-float>
+			<md-text-float label="Title" ng-model="title"></md-text-float>
+			<md-text-float label="eMail" ng-model="email" type="email"></md-text-float>
+		</div>
+	</form>
+</md-content>
+
+<md-content class="md-padding">
+	<form>
+		<div class="row">
+			<md-text-float label="Title" ng-model="title"></md-text-float>
+			<md-text-float label="eMail" ng-model="email" type="email"></md-text-float>
 		</div>
 	</form>
 </md-content>
