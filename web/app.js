@@ -4,15 +4,17 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 
 .config(function($locationProvider, $urlRouterProvider, $stateProvider) {
 	$locationProvider.html5Mode(true).hashPrefix('!')
-	$urlStateProvider.otherwise('/')
+	$urlRouterProvider.otherwise('/')
 	$stateProvider
-		.state('/', {
+		.state('root', {
+			url: '/',
 			templateUrl: 'checklist.html',
-			controller: 'checklistController'
+			controller: 'checklistController',
 		})
-		.state('/test', {
+		.state('test', {
+			url: '/test',
 			templateUrl: 'test.html',
-			controller: 'testController'
+			controller: 'testController',
 		})
 })
 
@@ -21,5 +23,5 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 })
 
 .controller('testController', function($scope) {
-
+	$scope.test = 'friend'
 })
