@@ -11,11 +11,6 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 			templateUrl: 'checklist.html',
 			controller: 'checklistController',
 		})
-		.state('test', {
-			url: '/test',
-			templateUrl: 'test.html',
-			controller: 'testController',
-		})
 })
 
 .controller('checklistController', function($scope, $mdDialog, checklistService) {
@@ -32,7 +27,7 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 
 .directive('checklistItems', function() {
 	return {
-		templateUrl: 'checklist-item.html',
+		templateUrl: 'checklist-items.html',
 		restrict: 'E',
 		scope: {
 			fields: '=fields',
