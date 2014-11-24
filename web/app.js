@@ -38,6 +38,16 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 	$scope.desc = desc
 })
 
+.directive('checklistItems', function() {
+	return {
+		templateUrl: 'checklist-item.html',
+		restrict: 'E',
+		scope: {
+			fields: '=fields'
+		}
+	}
+})
+
 .controller('testController', function($scope, checklistService) {
 	$scope.checklistItems = checklistService
 })
@@ -45,7 +55,7 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 .service('checklistService', function() {
 	this.websiteInfo = {
 		name: 'Website Info',
-		subItems: [
+		items: [
 			{
 				name: 'URL',
 				desc: 'URL of the site being checked.',
@@ -58,7 +68,7 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 
 	this.pageTests = {
 		name: 'Page Tests',
-		subItems: [
+		items: [
 			{
 				name: 'Contact Us',
 				desc: 'Fill out Contact Us page with a request to be forwarded to your email address',
@@ -116,7 +126,7 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 
 	this.listManagement = {
 		name: 'List Management',
-		subItems: [
+		items: [
 			{
 				name: 'roi-short',
 				desc: '',
@@ -135,7 +145,7 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 
 	this.browserTests = {
 		name: 'Browser Tests',
-		subItems: [
+		items: [
 			{
 				name: 'IE 8',
 				desc: '',

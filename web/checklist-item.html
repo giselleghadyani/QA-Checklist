@@ -1,0 +1,13 @@
+<md-toolbar md-theme="grey">
+	<h2 class="md-toolbar-tools">{{fields.name}}</h2>
+</md-toolbar>
+<md-content class="md-padding">
+	<form>
+		<div layout="row">
+			<div ng-repeat="item in fields.items">
+				<md-tooltip class="tooltip-full-text">{{item.desc}}</md-tooltip>
+				<md-text-float label="{{item.name}}" ng-model="item.model" ng-click="showDesc($event, item.name, item.desc)" layout-padding></md-text-float>
+			</div>
+		</div>
+	</form>
+</md-content>
