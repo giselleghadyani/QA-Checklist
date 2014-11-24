@@ -11,9 +11,9 @@ module.exports = (grunt) ->
 		options:
 			debug: true
 			keepalive: true
-			hostname: 'lol.katie-angular-test.com'
+			hostname: 'lol.qa-checklist.com'
 			port: 80
-			base: 'test/'
+			base: 'web/'
 
 		rules: [
 			from: '/[^\.]+$'
