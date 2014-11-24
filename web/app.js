@@ -10,8 +10,16 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 			templateUrl: 'checklist.html',
 			controller: 'checklistController'
 		})
+		.state('/test', {
+			templateUrl: 'test.html',
+			controller: 'testController'
+		})
 })
 
 .controller('checklistController', function($scope) {
+
+})
+
+.controller('testController', function($scope) {
 
 })
