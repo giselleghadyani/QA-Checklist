@@ -1,6 +1,10 @@
 'use strict';
 
-angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
+angular.module('qaChecklist', [
+	'ui.router',
+	'ngResource',
+	'ngMaterial',
+])
 
 .config(function($locationProvider, $urlRouterProvider, $stateProvider) {
 	$locationProvider.html5Mode(true).hashPrefix('!')
@@ -11,12 +15,24 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 			templateUrl: 'checklist.html',
 			controller: 'checklistController',
 		})
+		.state('login', {
+			url: '/login',
+			templateUrl: 'login.html',
+			controller: 'loginController',
+		})
+})
+
+.controller('loginController', function($scope, userService, loginService) {
+	userService.query().$promise.then(function(data) {
+		$scope.users = data
+	})
+	$scope.email = ''
+	$scope.password = ''
 })
 
 .controller('checklistController', function($scope, $mdDialog, checklistService) {
 	$scope.checklistItems = checklistService
 })
-
 
 .controller('checklistItemsController', function($scope) {
 	$scope.saveData = function(fields) {
@@ -165,4 +181,21 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 			},
 		]
 	}
+})
+
+.service('loginService', function() {
+	this.fields = [
+		{
+			name: 'Email',
+			type: 'email',
+		}, {
+			name: 'Password',
+			type: 'password',
+		}
+	]
+})
+
+.service('userService', function($resource) {
+	return $resource('https://qa-checklist.herokuapp.com/api/user/query', {}, {})
+	// return $resource('http://localhost:3000/api/user/query', {}, {})
 })
