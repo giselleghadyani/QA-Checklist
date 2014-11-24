@@ -22,8 +22,8 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 
 })
 
-.controller('testController', function($scope) {
-
+.controller('testController', function($scope, checklistService) {
+	$scope.checklistItems = checklistService
 })
 
 .service('checklistService', function() {
@@ -39,6 +39,7 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 			},
 		]
 	}
+
 	this.pageTests = {
 		name: 'Page Tests',
 		subItems: [
@@ -90,9 +91,13 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 			}, {
 				name: 'Pixel Test',
 				desc: 'Send through a unique lead (using a hitpath link) to ensure correct unsold payout appears in hitpath.',
+			}, {
+				name: 'Custom 404',
+				desc: 'Type earlypayday.net/junk in the url bar to see if there is a custom 404 page that allows user to redirect to the home page.',
 			},
 		]
 	}
+
 	this.listManagement = {
 		name: 'List Management',
 		subItems: [
@@ -100,16 +105,53 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 				name: 'roi-short',
 				desc: '',
 			}, {
-			{
 				name: 'roi-unsold',
 				desc: '',
 			}, {
-			{
 				name: 'roi-sold',
 				desc: '',
 			}, {
-			{
 				name: 'roi-milbdst',
+				desc: '',
+			},
+		]
+	}
+
+	this.browserTests = {
+		name: 'Browser Tests',
+		subItems: [
+			{
+				name: 'IE 8',
+				desc: '',
+			}, {
+				name: 'IE 9',
+				desc: '',
+			}, {
+				name: 'IE 10',
+				desc: '',
+			}, {
+				name: 'IE 11',
+				desc: '',
+			}, {
+				name: 'Firefox',
+				desc: '',
+			}, {
+				name: 'Chrome',
+				desc: '',
+			}, {
+				name: 'Safari',
+				desc: '',
+			}, {
+				name: 'Android Internet',
+				desc: '',
+			}, {
+				name: 'Android Chrome',
+				desc: '',
+			}, {
+				name: 'iPad Safari',
+				desc: '',
+			}, {
+				name: 'iPhone Safari',
 				desc: '',
 			},
 		]
