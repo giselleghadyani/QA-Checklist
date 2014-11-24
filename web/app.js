@@ -22,18 +22,22 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 	$scope.checklistItems = checklistService
 })
 
+
+.controller('checklistItemsController', function($scope) {
+	$scope.saveData = function(fields) {
+		console.log('here');
+		console.log(fields)
+	}
+})
+
 .directive('checklistItems', function() {
 	return {
 		templateUrl: 'checklist-item.html',
 		restrict: 'E',
 		scope: {
-			fields: '=fields'
+			fields: '=fields',
 		}
 	}
-})
-
-.controller('testController', function($scope, checklistService) {
-	$scope.checklistItems = checklistService
 })
 
 .service('checklistService', function() {
