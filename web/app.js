@@ -35,9 +35,16 @@ angular.module('qaChecklist', [
 })
 
 .controller('checklistItemsController', function($scope) {
-	$scope.data = {}
-	$scope.data.cb1 = true
-	$scope.data.cb2 = false
+	$scope.checkboxOptions = {
+		completed: {
+			checked: 'did',
+			unchecked: 'didn’t do'
+		},
+		tested: {
+			checked:'PASS',
+			unchecked: 'FAIL'
+		}
+	}
 	$scope.saveData = function(fields) {
 		console.log('here');
 		console.log(fields)
