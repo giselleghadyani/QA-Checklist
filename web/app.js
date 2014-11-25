@@ -22,14 +22,6 @@ angular.module('qaChecklist', [
 		})
 })
 
-.controller('loginController', function($scope, userService, loginService) {
-	userService.query().$promise.then(function(data) {
-		$scope.users = data
-	})
-	$scope.email = ''
-	$scope.password = ''
-})
-
 .controller('checklistController', function($scope, $mdDialog, checklistService) {
 	$scope.checklistItems = checklistService
 })
@@ -46,7 +38,6 @@ angular.module('qaChecklist', [
 		}
 	}
 	$scope.saveData = function(fields) {
-		console.log('here');
 		console.log(fields)
 	}
 })
@@ -205,7 +196,38 @@ angular.module('qaChecklist', [
 	]
 })
 
+.controller('loginController', function($rootScope, $scope, userService, loginService) {
+	$scope.user = {
+		email: 'kevin.ghadyani@theleadgroup.com',
+		password: 'test',
+	}
+
+	$scope.loginUser = function() {
+		userService.loginUser
+			.save({email: $scope.user.email, pass: $scope.user.password})
+			.$promise.then(function(data) {
+				$rootScope.auth = data
+			})
+
+			userService.authTest.save($rootScope.auth).$promise.then(function(data) {
+				console.log(data)
+			})
+	}
+
+	userService.getUser.get({name: 'Kevin Ghadyani'}).$promise.then(function(data) {
+		$scope.userTest = data
+	})
+
+	userService.getUsers.query().$promise.then(function(data) {
+		$scope.usersTest = data
+	})
+})
+
 .service('userService', function($resource) {
-	return $resource('https://qa-checklist.herokuapp.com/api/user/query', {}, {})
-	// return $resource('http://localhost:3000/api/user/query', {}, {})
+	var urlBase = 'https://qa-checklist.herokuapp.com/'
+	// var urlBase = 'http://localhost:3000/'
+	this.getUser = $resource(urlBase + 'api/user/get/:name', {name: ''}, {})
+	this.getUsers = $resource(urlBase + 'api/user/query', {}, {})
+	this.loginUser = $resource(urlBase + 'api/user/login/', {email: '@id', password: '@id'}, {})
+	this.authTest = $resource(urlBase + 'api/user/authTest/', {userId: '@id', token: '@id'}, {})
 })
