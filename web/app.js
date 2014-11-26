@@ -214,10 +214,6 @@ angular.module('qaChecklist', [
 			})
 	}
 
-	userService.getUser.get({name: 'Kevin Ghadyani'}).$promise.then(function(data) {
-		$scope.userTest = data
-	})
-
 	userService.getUsers.query().$promise.then(function(data) {
 		$scope.usersTest = data
 	})
