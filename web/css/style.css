@@ -1,3 +1,6 @@
 md-tooltip .md-content {
 	white-space: normal;
 }
+md-tooltip .md-background {
+	border-radius: 0;
+}
