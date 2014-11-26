@@ -5,6 +5,10 @@
 			<a ui-sref="checklists">&lt; Go Back</a>
 		</h3>
 	</md-toolbar>
+
+	<md-content class="md-padding">
+		<md-button class="md-raised md-primary" ng-click="saveData(checklistItems)">Save (it actually works!)</md-button>
+	</md-content>
 </div>
 
 <checklist-items fields="checklistItems.websiteInfo" md-theme="light-green"></checklist-items>

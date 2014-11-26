@@ -6,7 +6,7 @@
 
 	<ul>
 		<li ng-repeat="checklist in checklists">
-			<a ui-sref="checklists.item({checklistId: '{{checklist._id}}'})">{{checklist.fields.items[0].model || checklist.modified}}</a>
+			<a ui-sref="checklists.item({checklistId: '{{checklist._id}}'})">{{checklist.fields.websiteInfo.items[0].model || checklist.modified}}</a>
 		</li>
 	</ul>
 </md-content>

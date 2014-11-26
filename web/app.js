@@ -44,41 +44,64 @@ angular.module('qaChecklist', [
 		})
 })
 
-.controller('checklistController', function($rootScope, $scope, $state, $mdDialog, checklistService) {
+.controller('checklistController', function($rootScope, $scope, $state, $stateParams, $mdDialog, checklistService) {
 	if (!$rootScope.auth) {
 		$state.go('login')
 	}
 
 	$scope.checklistItems = checklistService
 
-	checklistService.checklists.query().$promise.then(function(data) {
-		if (!data.errorCode) {
-			$scope.checklists = data
-		} else {
-			$scope.errorMessage = data.message
-		}
-	})
-
-	$scope.addChecklist = function() {
-		checklistService.checklists.save({userId: $rootScope.auth.userId, fields: {}}).$promise.then(function(data) {
+	if ($stateParams.checklistId) {
+		checklistService.checklists.get({checklistId: $stateParams.checklistId}).$promise.then(function(data) {
+			console.log(data)
 			if (!data.errorCode) {
-				console.log(data)
-				if (data._id) { // TEMP
-					$scope.testlist = data
-					$state.go('checklists.item', {checklistId: data._id})
+				if (data.fields) {
+					$scope.checklistItems = data.fields
 				}
 			} else {
+				$scope.errorMessage = data.message
+			}
+		})
+	} else {
+		checklistService.checklists.query().$promise.then(function(data) {
+			if (!data.errorCode) {
+				$scope.checklists = data
+			} else {
+				$scope.errorMessage = data.message
+			}
+		})
+	}
+
+	$scope.addChecklist = function() {
+		checklistService.checklists.save({
+			userId: $rootScope.auth.userId,
+			fields: {},
+		}).$promise.then(function(data) {
+			if (!data.errorCode) {
+				console.log(data)
+				$state.go('checklists.item', {checklistId: data._id})
+			} else {
+				$scope.errorMessage = data.message
+			}
+		})
+	}
+
+	$scope.saveData = function(fields) {
+		console.log(fields)
+		checklistService.checklists.update({
+			checklistId: $stateParams.checklistId,
+			userId: $rootScope.auth.userId,
+			fields: fields,
+		}).$promise.then(function(data) {
+			console.log(data)
+			if (data.errorMessage) {
 				$scope.errorMessage = data.message
 			}
 		})
 	}
 })
 
-.controller('checklistItemsController', function($rootScope, $scope, $state, checklistService) {
-	if (!$rootScope.auth) {
-		$state.go('login')
-	}
-
+.controller('checklistItemsController', function($scope) {
 	$scope.checkboxOptions = {
 		completed: {
 			checked: 'did',
@@ -88,12 +111,6 @@ angular.module('qaChecklist', [
 			checked:'PASS',
 			unchecked: 'FAIL'
 		}
-	}
-	$scope.saveData = function(fields) {
-		console.log(fields)
-		checklistService.checklists.save({userId: $rootScope.auth.userId, fields: fields}).$promise.then(function(data) {
-			console.log(data)
-		})
 	}
 })
 
@@ -108,12 +125,17 @@ angular.module('qaChecklist', [
 })
 
 .service('checklistService', function($resource) {
-	// var urlBase = 'https://qa-checklist.herokuapp.com/'
-	var urlBase = 'http://localhost:3000/'
+	var urlBase = 'https://qa-checklist.herokuapp.com/'
+	// var urlBase = 'http://localhost:3000/'
 	this.checklists = $resource(urlBase + 'api/checklists/:checklistId', {
 		checklistId: '', userId: '@id', fields: '@id'
 	}, {
-		update: {method:'PUT'},
+		update: {
+			method: 'PUT',
+			params: {
+				checklistId: '@id',
+			}
+		},
 	})
 
 	this.websiteInfo = {
@@ -131,6 +153,7 @@ angular.module('qaChecklist', [
 
 	this.pageTests = {
 		name: 'Page Tests',
+		tests: true,
 		items: [
 			{
 				name: 'Contact Us',
@@ -189,6 +212,7 @@ angular.module('qaChecklist', [
 
 	this.listManagement = {
 		name: 'List Management',
+		tests: true,
 		items: [
 			{
 				name: 'roi-short',
@@ -208,6 +232,7 @@ angular.module('qaChecklist', [
 
 	this.browserTests = {
 		name: 'Browser Tests',
+		tests: true,
 		items: [
 			{
 				name: 'IE 8',
@@ -286,8 +311,8 @@ angular.module('qaChecklist', [
 })
 
 .service('userService', function($resource) {
-	// var urlBase = 'https://qa-checklist.herokuapp.com/'
-	var urlBase = 'http://localhost:3000/'
+	var urlBase = 'https://qa-checklist.herokuapp.com/'
+	// var urlBase = 'http://localhost:3000/'
 	this.users = $resource(urlBase + 'api/users/:name', {name: ''}, {})
 	this.login = $resource(urlBase + 'api/login', {email: '@id', password: '@id'}, {})
 	this.auth = $resource(urlBase + 'api/auth', {userId: '@id', token: '@id'}, {})
