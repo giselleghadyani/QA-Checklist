@@ -198,8 +198,8 @@ angular.module('qaChecklist', [
 
 .controller('loginController', function($rootScope, $scope, userService, loginService) {
 	$scope.user = {
-		email: 'kevin.ghadyani@theleadgroup.com',
-		password: 'test',
+		email: '',
+		password: '',
 	}
 
 	$scope.loginUser = function() {
