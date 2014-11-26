@@ -1,16 +1,24 @@
 <md-content class="md-padding">
-	<form ng-submit="loginUser()">
+	<h1>Login</h1>
+	<p>Login to view checklists</p>
+
+	<div ng-show="errorMessage" md-theme="red">
+		<md-toolbar>
+			<p class="md-toolbar-tools">{{errorMessage}}</p>
+		</md-toolbar>
+	</div>
+
+	<form ng-submit="loginUser()" ng-click="hideErrorMessage()">
 		<md-text-float label="email" type="email" ng-model="user.email"></md-text-float>
-		<md-text-float label="password" type="password" ng-model="user.password"></md-text-float>
+		<md-text-float label="password" type="password" ng-model="user.pass"></md-text-float>
 
 		<md-button class="md-primary md-raised">Login</md-button>
 	</form>
 
-	<h2>Users</h2>
-	<p>{{usersTest}}</p>
-
-	<div ng-repeat="user in usersTest">
-		<h3>Name</h3>
-		<p>{{user.name}}</p>
+	<div>
+		<h3>Users' Names</h3>
+		<ul>
+			<li ng-repeat="user in usersTest">{{user.name}}</li>
+		</ul>
 	</div>
 </md-content>

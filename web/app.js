@@ -8,25 +8,77 @@ angular.module('qaChecklist', [
 
 .config(function($locationProvider, $urlRouterProvider, $stateProvider) {
 	$locationProvider.html5Mode(true).hashPrefix('!')
-	$urlRouterProvider.otherwise('/')
+	$urlRouterProvider.otherwise('/login')
 	$stateProvider
-		.state('root', {
-			url: '/',
-			templateUrl: 'checklist.html',
-			controller: 'checklistController',
-		})
+		// .state('root', {
+		// 	url: '/',
+		// 	abstract: true
+		// 	template: '<ui-view />',
+		// })
 		.state('login', {
 			url: '/login',
-			templateUrl: 'login.html',
-			controller: 'loginController',
+			views: {
+				main: {
+					templateUrl: 'login.html',
+					controller: 'loginController',
+				}
+			}
+		})
+		.state('checklists', {
+			url: '/checklists',
+			views: {
+				main: {
+					templateUrl: 'checklists.html',
+					controller: 'checklistController',
+				}
+			}
+		})
+		.state('checklists.item', {
+			url: '/:checklistId',
+			views: {
+				'main@': {
+					templateUrl: 'checklist.html',
+					controller: 'checklistController',
+				}
+			}
 		})
 })
 
-.controller('checklistController', function($scope, $mdDialog, checklistService) {
+.controller('checklistController', function($rootScope, $scope, $state, $mdDialog, checklistService) {
+	if (!$rootScope.auth) {
+		$state.go('login')
+	}
+
 	$scope.checklistItems = checklistService
+
+	checklistService.checklists.query().$promise.then(function(data) {
+		if (!data.errorCode) {
+			$scope.checklists = data
+		} else {
+			$scope.errorMessage = data.message
+		}
+	})
+
+	$scope.addChecklist = function() {
+		checklistService.checklists.save({userId: $rootScope.auth.userId, fields: {}}).$promise.then(function(data) {
+			if (!data.errorCode) {
+				console.log(data)
+				if (data._id) { // TEMP
+					$scope.testlist = data
+					$state.go('checklists.item', {checklistId: data._id})
+				}
+			} else {
+				$scope.errorMessage = data.message
+			}
+		})
+	}
 })
 
-.controller('checklistItemsController', function($scope) {
+.controller('checklistItemsController', function($rootScope, $scope, $state, checklistService) {
+	if (!$rootScope.auth) {
+		$state.go('login')
+	}
+
 	$scope.checkboxOptions = {
 		completed: {
 			checked: 'did',
@@ -39,6 +91,9 @@ angular.module('qaChecklist', [
 	}
 	$scope.saveData = function(fields) {
 		console.log(fields)
+		checklistService.checklists.save({userId: $rootScope.auth.userId, fields: fields}).$promise.then(function(data) {
+			console.log(data)
+		})
 	}
 })
 
@@ -52,7 +107,15 @@ angular.module('qaChecklist', [
 	}
 })
 
-.service('checklistService', function() {
+.service('checklistService', function($resource) {
+	// var urlBase = 'https://qa-checklist.herokuapp.com/'
+	var urlBase = 'http://localhost:3000/'
+	this.checklists = $resource(urlBase + 'api/checklists/:checklistId', {
+		checklistId: '', userId: '@id', fields: '@id'
+	}, {
+		update: {method:'PUT'},
+	})
+
 	this.websiteInfo = {
 		name: 'Website Info',
 		items: [
@@ -196,34 +259,36 @@ angular.module('qaChecklist', [
 	]
 })
 
-.controller('loginController', function($rootScope, $scope, userService, loginService) {
+.controller('loginController', function($rootScope, $scope, $state, userService, loginService) {
 	$scope.user = {
 		email: '',
-		password: '',
+		pass: '',
+	}
+
+	$scope.hideErrorMessage = function() {
+		$scope.errorMessage = ''
 	}
 
 	$scope.loginUser = function() {
-		userService.loginUser
-			.save({email: $scope.user.email, pass: $scope.user.password})
-			.$promise.then(function(data) {
+		userService.login.save($scope.user).$promise.then(function(data) {
+			if (!data.errorCode) {
 				$rootScope.auth = data
-			})
-
-			userService.authTest.save($rootScope.auth).$promise.then(function(data) {
-				console.log(data)
-			})
+				$state.go('checklists')
+			} else {
+				$scope.errorMessage = data.message
+			}
+		})
 	}
 
-	userService.getUsers.query().$promise.then(function(data) {
+	userService.users.query().$promise.then(function(data) {
 		$scope.usersTest = data
 	})
 })
 
 .service('userService', function($resource) {
-	var urlBase = 'https://qa-checklist.herokuapp.com/'
-	// var urlBase = 'http://localhost:3000/'
-	this.getUser = $resource(urlBase + 'api/user/get/:name', {name: ''}, {})
-	this.getUsers = $resource(urlBase + 'api/user/query', {}, {})
-	this.loginUser = $resource(urlBase + 'api/user/login/', {email: '@id', password: '@id'}, {})
-	this.authTest = $resource(urlBase + 'api/user/authTest/', {userId: '@id', token: '@id'}, {})
+	// var urlBase = 'https://qa-checklist.herokuapp.com/'
+	var urlBase = 'http://localhost:3000/'
+	this.users = $resource(urlBase + 'api/users/:name', {name: ''}, {})
+	this.login = $resource(urlBase + 'api/login', {email: '@id', password: '@id'}, {})
+	this.auth = $resource(urlBase + 'api/auth', {userId: '@id', token: '@id'}, {})
 })

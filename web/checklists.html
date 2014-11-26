@@ -1,0 +1,12 @@
+<md-content class="md-padding">
+	<h1>Checklists</h1>
+	<p>
+		<md-button class="md-primary md-raised" ng-click="addChecklist()">Add Checklist</md-button>
+	</p>
+
+	<ul>
+		<li ng-repeat="checklist in checklists">
+			<a ui-sref="checklists.item({checklistId: '{{checklist._id}}'})">{{checklist.fields.items[0].model || checklist.modified}}</a>
+		</li>
+	</ul>
+</md-content>
