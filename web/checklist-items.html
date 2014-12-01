@@ -9,10 +9,10 @@
 					<md-tooltip class="tooltip-full-text">{{item.desc}}</md-tooltip>
 					<md-text-float label="{{item.name}}" ng-model="item.model"></md-text-float>
 					<div ng-if="fields.tests">
-						<md-checkbox ng-model="item.completed" ng-init="item.completed = checkboxOptions.completed.unchecked" ng-true-value="'{{checkboxOptions.completed.checked}}'" ng-false-value="'{{checkboxOptions.completed.unchecked}}'">
+						<md-checkbox ng-model="item.completed" ng-init="item.completed = item.completed || checkboxOptions.completed.unchecked" ng-true-value="'{{checkboxOptions.completed.checked}}'" ng-false-value="'{{checkboxOptions.completed.unchecked}}'">
 							I {{item.completed}} this test
 						</md-checkbox>
-						<md-checkbox ng-model="item.tested" ng-init="item.tested = checkboxOptions.tested.unchecked" ng-true-value="'{{checkboxOptions.tested.checked}}'" ng-false-value="'{{checkboxOptions.tested.unchecked}}'">
+						<md-checkbox ng-model="item.tested" ng-init="item.tested = item.tested || checkboxOptions.tested.unchecked" ng-true-value="'{{checkboxOptions.tested.checked}}'" ng-false-value="'{{checkboxOptions.tested.unchecked}}'">
 							{{item.tested}}
 						</md-checkbox>
 					</div>

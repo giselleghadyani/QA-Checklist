@@ -73,6 +73,8 @@ angular.module('qaChecklist', [
 			if (!data.errorCode) {
 				if (data.fields) {
 					$scope.checklistItems = data.fields
+				} else {
+					$scope.checklistItems = checklistService
 				}
 			} else {
 				$scope.errorMessage = data.message
@@ -139,7 +141,7 @@ angular.module('qaChecklist', [
 			unchecked: 'didn’t do'
 		},
 		tested: {
-			checked:'PASS',
+			checked: 'PASS',
 			unchecked: 'FAIL'
 		}
 	}
