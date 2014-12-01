@@ -19,28 +19,43 @@ angular.module('qaChecklist', [
 		.state('login', {
 			url: '/login',
 			views: {
+				header: {
+					pageHeading: 'Login',
+					templateUrl: 'site-header.html',
+					controller: 'loginController'
+				},
 				main: {
 					templateUrl: 'login.html',
 					controller: 'loginController',
-				}
+				},
 			}
 		})
 		.state('checklists', {
 			url: '/checklists',
 			views: {
+				header: {
+					pageHeading: 'Checklists',
+					templateUrl: 'site-header.html',
+					controller: 'loginController'
+				},
 				main: {
 					templateUrl: 'checklists.html',
 					controller: 'checklistController',
-				}
+				},
 			}
 		})
 		.state('checklists.item', {
 			url: '/:checklistId',
 			views: {
+				'header@': {
+					// pageHeading: 'Checklist',
+					// templateUrl: 'site-header.html',
+					// controller: 'loginController'
+				},
 				'main@': {
 					templateUrl: 'checklist.html',
 					controller: 'checklistController',
-				}
+				},
 			}
 		})
 })
@@ -87,7 +102,7 @@ angular.module('qaChecklist', [
 		})
 	}
 
-	$scope.saveData = function(fields) {
+	$scope.saveChecklist = function(fields) {
 		console.log(fields)
 		checklistService.checklists.update({
 			checklistId: $stateParams.checklistId,
@@ -286,6 +301,8 @@ angular.module('qaChecklist', [
 })
 
 .controller('loginController', function($cookieStore, $scope, $state, userService, loginService) {
+	$scope.pageHeading = $state.current.views.header.pageHeading
+
 	$scope.user = {
 		email: '',
 		pass: '',
@@ -295,7 +312,7 @@ angular.module('qaChecklist', [
 		$scope.errorMessage = ''
 	}
 
-	$scope.loginUser = function() {
+	$scope.login = function() {
 		userService.login.save($scope.user).$promise.then(function(data) {
 			if (!data.errorCode) {
 				$cookieStore.put('auth', data)
@@ -304,6 +321,15 @@ angular.module('qaChecklist', [
 				$scope.errorMessage = data.message
 			}
 		})
+	}
+
+	$scope.loggedIn = function() {
+		return $cookieStore.get('auth') ? true : false
+	}
+
+	$scope.logout = function() {
+		$cookieStore.remove('auth')
+		$state.go('login')
 	}
 
 	userService.users.query().$promise.then(function(data) {

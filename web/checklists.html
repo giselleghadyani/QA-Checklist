@@ -4,9 +4,19 @@
 		<md-button class="md-primary md-raised" ng-click="addChecklist()">Add Checklist</md-button>
 	</p>
 
-	<ul>
-		<li ng-repeat="checklist in checklists">
-			<a ui-sref="checklists.item({checklistId: '{{checklist._id}}'})">{{checklist.fields.websiteInfo.items[0].model || checklist.modified}}</a>
-		</li>
-	</ul>
+	<md-list>
+		<md-item ng-repeat="checklist in checklists">
+			<md-item-content>
+				<div class="md-tile-content">
+					<h3>
+						<a ui-sref="checklists.item({checklistId: '{{checklist._id}}'})">{{checklist.fields.websiteInfo.items[0].model || checklist.modified}}</a>
+					</h3>
+					<p>
+						{{checklist.fields.websiteInfo.items[1].model || ''}}
+					</p>
+				</div>
+			</md-item-content>
+			<md-divider ng-if="!$last"></md-divider>
+		</md-item>
+	</md-list>
 </md-content>
