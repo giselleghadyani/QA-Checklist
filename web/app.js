@@ -115,6 +115,21 @@ angular.module('qaChecklist', [
 			}
 		})
 	}
+
+	$scope.deleteChecklist = function(checklistId) {
+		if (!checklistId) {
+			checklistId = $stateParams.checklistId
+		}
+		checklistService.checklists.delete({
+			checklistId: checklistId,
+			userId: $cookieStore.get('auth').userId,
+		}).$promise.then(function(data) {
+			console.log(data)
+			if (data.errorMessage) {
+				$scope.errorMessage = data.message
+			}
+		})
+	}
 })
 
 .controller('checklistItemsController', function($scope) {
@@ -144,7 +159,9 @@ angular.module('qaChecklist', [
 	var urlBase = 'https://qa-checklist.herokuapp.com/'
 	// var urlBase = 'http://localhost:3000/'
 	this.checklists = $resource(urlBase + 'api/checklists/:checklistId', {
-		checklistId: '', userId: '@id', fields: '@id'
+		checklistId: '',
+		userId: '@id',
+		fields: '@id',
 	}, {
 		update: {
 			method: 'PUT',
@@ -328,8 +345,14 @@ angular.module('qaChecklist', [
 	}
 
 	$scope.logout = function() {
-		$cookieStore.remove('auth')
-		$state.go('login')
+		userService.auth.delete($cookieStore.get('auth')).$promise.then(function(data) {
+			if (!data.errorCode) {
+				$cookieStore.remove('auth')
+				$state.go('login')
+			} else {
+				$scope.errorMessage = data.message
+			}
+		})
 	}
 
 	userService.users.query().$promise.then(function(data) {
