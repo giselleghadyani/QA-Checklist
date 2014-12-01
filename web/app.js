@@ -4,6 +4,7 @@ angular.module('qaChecklist', [
 	'ui.router',
 	'ngResource',
 	'ngMaterial',
+	'ngCookies',
 ])
 
 .config(function($locationProvider, $urlRouterProvider, $stateProvider) {
@@ -44,8 +45,8 @@ angular.module('qaChecklist', [
 		})
 })
 
-.controller('checklistController', function($rootScope, $scope, $state, $stateParams, $mdDialog, checklistService) {
-	if (!$rootScope.auth) {
+.controller('checklistController', function($cookieStore, $scope, $state, $stateParams, $mdDialog, checklistService) {
+	if (!$cookieStore.get('auth')) {
 		$state.go('login')
 	}
 
@@ -74,7 +75,7 @@ angular.module('qaChecklist', [
 
 	$scope.addChecklist = function() {
 		checklistService.checklists.save({
-			userId: $rootScope.auth.userId,
+			userId: $cookieStore.get('auth').userId,
 			fields: {},
 		}).$promise.then(function(data) {
 			if (!data.errorCode) {
@@ -90,7 +91,7 @@ angular.module('qaChecklist', [
 		console.log(fields)
 		checklistService.checklists.update({
 			checklistId: $stateParams.checklistId,
-			userId: $rootScope.auth.userId,
+			userId: $cookieStore.get('auth').userId,
 			fields: fields,
 		}).$promise.then(function(data) {
 			console.log(data)
@@ -284,7 +285,7 @@ angular.module('qaChecklist', [
 	]
 })
 
-.controller('loginController', function($rootScope, $scope, $state, userService, loginService) {
+.controller('loginController', function($cookieStore, $scope, $state, userService, loginService) {
 	$scope.user = {
 		email: '',
 		pass: '',
@@ -297,7 +298,7 @@ angular.module('qaChecklist', [
 	$scope.loginUser = function() {
 		userService.login.save($scope.user).$promise.then(function(data) {
 			if (!data.errorCode) {
-				$rootScope.auth = data
+				$cookieStore.put('auth', data)
 				$state.go('checklists')
 			} else {
 				$scope.errorMessage = data.message
