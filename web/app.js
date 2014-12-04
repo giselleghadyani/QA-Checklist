@@ -118,7 +118,8 @@ angular.module('qaChecklist', [
 		})
 	}
 
-	$scope.deleteChecklist = function(checklistId) {
+	$scope.deleteChecklist = function(checklist) {
+		var checklistId = checklist._id
 		if (!checklistId) {
 			checklistId = $stateParams.checklistId
 		}
@@ -127,7 +128,9 @@ angular.module('qaChecklist', [
 			userId: $cookieStore.get('auth').userId,
 		}).$promise.then(function(data) {
 			console.log(data)
-			if (data.errorMessage) {
+			if (!data.errorMessage) {
+				checklist.isHidden = true
+			} else {
 				$scope.errorMessage = data.message
 			}
 		})
