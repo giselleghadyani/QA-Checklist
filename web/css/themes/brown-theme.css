@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.6.0-rc2-master-e2c50a8
+ * v0.6.1-master-c62b970
  */
 md-backdrop.md-opaque.md-brown-theme {
   background-color: rgba(0, 0, 0, 0.3);
@@ -84,10 +84,15 @@ md-divider.md-brown-theme {
 
 md-progress-circular.md-brown-theme {
   background-color: transparent; }
-  md-progress-circular.md-brown-theme .md-circle .md-mask .md-fill {
-    background-color: #795548; }
-  md-progress-circular.md-brown-theme .md-inset {
-    background-color: #ffffff; }
+  md-progress-circular.md-brown-theme .md-inner .md-gap {
+    border-top-color: #795548;
+    border-bottom-color: #795548; }
+  md-progress-circular.md-brown-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-brown-theme .md-inner .md-right .md-half-circle {
+    border-top-color: #795548; }
+  md-progress-circular.md-brown-theme .md-inner .md-right .md-half-circle {
+    border-right-color: #795548; }
+  md-progress-circular.md-brown-theme .md-inner .md-left .md-half-circle {
+    border-left-color: #795548; }
 
 md-progress-linear.md-brown-theme .md-container {
   background-color: #d7ccc8; }
@@ -98,8 +103,6 @@ md-progress-linear.md-brown-theme[md-mode=buffer] .md-dashed:before {
 md-progress-linear.md-brown-theme[md-mode=buffer] .md-bar1 {
   background-color: #d7ccc8; }
 
-md-radio-button.md-brown-theme .md-container .md-ripple, md-switch.md-brown-theme .md-switch-thumb .md-container .md-ripple {
-  color: #43a047; }
 md-radio-button.md-brown-theme .md-off, md-switch.md-brown-theme .md-switch-thumb .md-off {
   border-color: rgba(0, 0, 0, 0.54); }
 md-radio-button.md-brown-theme .md-on, md-switch.md-brown-theme .md-switch-thumb .md-on {
@@ -108,8 +111,14 @@ md-radio-button.md-brown-theme.md-checked .md-off, md-switch.md-brown-theme .md-
   border-color: rgba(102, 187, 106, 0.87); }
 md-radio-button.md-brown-theme.md-checked .md-ink-ripple, md-switch.md-brown-theme .md-switch-thumb.md-checked .md-ink-ripple {
   color: rgba(102, 187, 106, 0.87); }
+md-radio-button.md-brown-theme .md-container .md-ripple, md-switch.md-brown-theme .md-switch-thumb .md-container .md-ripple {
+  color: #43a047; }
+md-radio-button.md-brown-theme[disabled] .md-container .md-off, md-switch.md-brown-theme .md-switch-thumb[disabled] .md-container .md-off {
+  border-color: rgba(0, 0, 0, 0.26); }
+md-radio-button.md-brown-theme[disabled] .md-container .md-on, md-switch.md-brown-theme .md-switch-thumb[disabled] .md-container .md-on {
+  border-color: rgba(0, 0, 0, 0.26); }
 
-md-radio-group.md-brown-theme:focus {
+md-radio-group.md-brown-theme:focus:not(:empty) {
   border-color: rgba(0, 0, 0, 0.73); }
 
 md-slider.md-brown-theme .md-track {
@@ -144,10 +153,21 @@ md-slider.md-brown-theme[disabled]:not(.md-min) .md-thumb:after {
   .md-subheader.md-brown-theme.md-primary {
     color: #795548; }
 
-md-switch.md-brown-theme .md-switch-bar {
-  background-color: rgba(0, 0, 0, 0.54); }
-md-switch.md-brown-theme .md-switch-thumb:focus .md-label {
-  border: 1px dotted black; }
+md-switch.md-brown-theme .md-thumb {
+  background-color: #fafafa; }
+md-switch.md-brown-theme .md-bar {
+  background-color: #9e9e9e; }
+md-switch.md-brown-theme.md-checked .md-thumb {
+  background-color: #795548; }
+md-switch.md-brown-theme.md-checked .md-bar {
+  background-color: rgba(121, 85, 72, 0.5); }
+md-switch.md-brown-theme[disabled] .md-thumb {
+  background-color: #bdbdbd; }
+md-switch.md-brown-theme[disabled] .md-bar {
+  background-color: rgba(0, 0, 0, 0.12); }
+md-switch.md-brown-theme:focus .md-label:not(:empty) {
+  border-color: black;
+  border-style: dotted; }
 
 md-tabs.md-brown-theme .md-header {
   background-color: #795548; }
@@ -199,37 +219,10 @@ md-toast.md-brown-theme {
 md-toolbar.md-brown-theme {
   background-color: #795548;
   color: white; }
+  md-toolbar.md-brown-theme .md-button {
+    color: white; }
 
 md-tooltip.md-brown-theme {
   color: #ffffff; }
   md-tooltip.md-brown-theme .md-background {
     background-color: rgba(0, 0, 0, 0.52); }
-
-.md-brown-theme *[md-color-level='50'], .md-brown-theme[md-color-level='50'] {
-  color: #efebe9 !important; }
-.md-brown-theme *[md-color-level='100'], .md-brown-theme[md-color-level='100'] {
-  color: #d7ccc8 !important; }
-.md-brown-theme *[md-color-level='200'], .md-brown-theme[md-color-level='200'] {
-  color: #bcaaa4 !important; }
-.md-brown-theme *[md-color-level='300'], .md-brown-theme[md-color-level='300'] {
-  color: #a1887f !important; }
-.md-brown-theme *[md-color-level='400'], .md-brown-theme[md-color-level='400'] {
-  color: #8d6e63 !important; }
-.md-brown-theme *[md-color-level='500'], .md-brown-theme[md-color-level='500'] {
-  color: #795548 !important; }
-.md-brown-theme *[md-color-level='600'], .md-brown-theme[md-color-level='600'] {
-  color: #6d4c41 !important; }
-.md-brown-theme *[md-color-level='700'], .md-brown-theme[md-color-level='700'] {
-  color: #5d4037 !important; }
-.md-brown-theme *[md-color-level='800'], .md-brown-theme[md-color-level='800'] {
-  color: #4e342e !important; }
-.md-brown-theme *[md-color-level='900'], .md-brown-theme[md-color-level='900'] {
-  color: #3e2723 !important; }
-.md-brown-theme *[md-color-level='A100'], .md-brown-theme[md-color-level='A100'] {
-  color: !important; }
-.md-brown-theme *[md-color-level='A200'], .md-brown-theme[md-color-level='A200'] {
-  color: !important; }
-.md-brown-theme *[md-color-level='A400'], .md-brown-theme[md-color-level='A400'] {
-  color: !important; }
-.md-brown-theme *[md-color-level='A700'], .md-brown-theme[md-color-level='A700'] {
-  color: !important; }
