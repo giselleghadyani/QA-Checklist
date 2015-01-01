@@ -4,3 +4,8 @@ md-tooltip .md-content {
 md-tooltip .md-background {
 	border-radius: 0;
 }
+
+.md-button.md-fab {
+	height: 30px;
+	width: 30px;
+}
