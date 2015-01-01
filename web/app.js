@@ -359,10 +359,6 @@ angular.module('qaChecklist', [
 			}
 		})
 	}
-
-	userService.users.query().$promise.then(function(data) {
-		$scope.usersTest = data
-	})
 })
 
 .service('userService', function($resource) {
