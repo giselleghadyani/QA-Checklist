@@ -9,3 +9,8 @@ md-tooltip .md-background {
 	height: 30px;
 	width: 30px;
 }
+
+.md-button.md-fab > .fa {
+	top: -2px;
+	position: relative;
+}
