@@ -1,0 +1,17 @@
+<md-content class="md-padding">
+
+	<p>Login to view checklists</p>
+
+	<div ng-show="errorMessage" md-theme="red">
+		<md-toolbar>
+			<p class="md-toolbar-tools">{{errorMessage}}</p>
+		</md-toolbar>
+	</div>
+
+	<form ng-submit="login()" ng-click="hideErrorMessage()">
+		<md-text-float label="email" type="email" ng-model="user.email"></md-text-float>
+		<md-text-float label="password" type="password" ng-model="user.pass"></md-text-float>
+
+		<md-button class="md-primary md-raised">Login</md-button>
+	</form>
+</md-content>

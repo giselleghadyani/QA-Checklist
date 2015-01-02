@@ -1,0 +1,26 @@
+<md-content class="md-padding">
+	<p>
+		<md-button class="md-primary md-raised" ng-click="addChecklist()">Add Checklist</md-button>
+	</p>
+
+	<md-list>
+		<md-item ng-repeat="checklist in checklists">
+			<md-item-content ng-hide="checklist.isHidden">
+				<div class="md-tile-left">
+					<md-button class="md-fab" ng-click="deleteChecklist(checklist)">
+						<i class="fa fa-trash"></i>
+					</md-button>
+				</div>
+				<div class="md-tile-content">
+					<h3>
+						<a ui-sref="checklists.item({checklistId: '{{checklist._id}}'})">{{checklist.fields.websiteInfo.items[0].model || checklist.modified}}</a>
+					</h3>
+					<p>
+						{{checklist.fields.websiteInfo.items[1].model || ''}}
+					</p>
+				</div>
+			</md-item-content>
+			<md-divider ng-if="!$last" ng-hide="checklist.isHidden"></md-divider>
+		</md-item>
+	</md-list>
+</md-content>

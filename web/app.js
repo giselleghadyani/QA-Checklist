@@ -1,27 +1,152 @@
 'use strict';
 
-angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
+angular.module('qaChecklist', [
+	'ui.router',
+	'ngResource',
+	'ngMaterial',
+	'ngCookies',
+])
 
 .config(function($locationProvider, $urlRouterProvider, $stateProvider) {
 	$locationProvider.html5Mode(true).hashPrefix('!')
-	$urlRouterProvider.otherwise('/')
+	$urlRouterProvider.otherwise('/login')
 	$stateProvider
-		.state('root', {
-			url: '/',
-			templateUrl: 'checklist.html',
-			controller: 'checklistController',
+		// .state('root', {
+		// 	url: '/',
+		// 	abstract: true
+		// 	template: '<ui-view />',
+		// })
+		.state('login', {
+			url: '/login',
+			views: {
+				header: {
+					pageHeading: 'Login',
+					templateUrl: 'site-header.html',
+					controller: 'loginController'
+				},
+				main: {
+					templateUrl: 'login.html',
+					controller: 'loginController',
+				},
+			}
+		})
+		.state('checklists', {
+			url: '/checklists',
+			views: {
+				header: {
+					pageHeading: 'Checklists',
+					templateUrl: 'site-header.html',
+					controller: 'loginController'
+				},
+				main: {
+					templateUrl: 'checklists.html',
+					controller: 'checklistController',
+				},
+			}
+		})
+		.state('checklists.item', {
+			url: '/:checklistId',
+			views: {
+				'header@': {
+					// pageHeading: 'Checklist',
+					// templateUrl: 'site-header.html',
+					// controller: 'loginController'
+				},
+				'main@': {
+					templateUrl: 'checklist.html',
+					controller: 'checklistController',
+				},
+			}
 		})
 })
 
-.controller('checklistController', function($scope, $mdDialog, checklistService) {
+.controller('checklistController', function($cookieStore, $scope, $state, $stateParams, $mdDialog, checklistService) {
+	if (!$cookieStore.get('auth')) {
+		$state.go('login')
+	}
+
 	$scope.checklistItems = checklistService
+
+	if ($stateParams.checklistId) {
+		checklistService.checklists.get({checklistId: $stateParams.checklistId}).$promise.then(function(data) {
+			console.log(data)
+			if (!data.errorCode) {
+				if (data.fields) {
+					$scope.checklistItems = data.fields
+				} else {
+					$scope.checklistItems = checklistService
+				}
+			} else {
+				$scope.errorMessage = data.message
+			}
+		})
+	} else {
+		checklistService.checklists.query().$promise.then(function(data) {
+			if (!data.errorCode) {
+				$scope.checklists = data
+			} else {
+				$scope.errorMessage = data.message
+			}
+		})
+	}
+
+	$scope.addChecklist = function() {
+		checklistService.checklists.save({
+			userId: $cookieStore.get('auth').userId,
+			fields: {},
+		}).$promise.then(function(data) {
+			if (!data.errorCode) {
+				console.log(data)
+				$state.go('checklists.item', {checklistId: data._id})
+			} else {
+				$scope.errorMessage = data.message
+			}
+		})
+	}
+
+	$scope.saveChecklist = function(fields) {
+		console.log(fields)
+		checklistService.checklists.update({
+			checklistId: $stateParams.checklistId,
+			userId: $cookieStore.get('auth').userId,
+			fields: fields,
+		}).$promise.then(function(data) {
+			console.log(data)
+			if (data.errorMessage) {
+				$scope.errorMessage = data.message
+			}
+		})
+	}
+
+	$scope.deleteChecklist = function(checklist) {
+		var checklistId = checklist._id
+		if (!checklistId) {
+			checklistId = $stateParams.checklistId
+		}
+		checklistService.checklists.delete({
+			checklistId: checklistId,
+			userId: $cookieStore.get('auth').userId,
+		}).$promise.then(function(data) {
+			console.log(data)
+			if (!data.errorMessage) {
+				checklist.isHidden = true
+			} else {
+				$scope.errorMessage = data.message
+			}
+		})
+	}
 })
 
-
 .controller('checklistItemsController', function($scope) {
-	$scope.saveData = function(fields) {
-		console.log('here');
-		console.log(fields)
+	$scope.checkboxOptions = {
+		completed: {
+			checked: 'did',
+			unchecked: 'didn’t do'
+		},
+		tested: {
+			checked: 'PASS',
+			unchecked: 'FAIL'
+		}
 	}
 })
 
@@ -35,7 +160,22 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 	}
 })
 
-.service('checklistService', function() {
+.service('checklistService', function($resource) {
+	var urlBase = 'https://qa-checklist.herokuapp.com/'
+	// var urlBase = 'http://localhost:3000/'
+	this.checklists = $resource(urlBase + 'api/checklists/:checklistId', {
+		checklistId: '',
+		userId: '@id',
+		fields: '@id',
+	}, {
+		update: {
+			method: 'PUT',
+			params: {
+				checklistId: '@id',
+			}
+		},
+	})
+
 	this.websiteInfo = {
 		name: 'Website Info',
 		items: [
@@ -51,6 +191,7 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 
 	this.pageTests = {
 		name: 'Page Tests',
+		tests: true,
 		items: [
 			{
 				name: 'Contact Us',
@@ -109,6 +250,7 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 
 	this.listManagement = {
 		name: 'List Management',
+		tests: true,
 		items: [
 			{
 				name: 'roi-short',
@@ -128,6 +270,7 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 
 	this.browserTests = {
 		name: 'Browser Tests',
+		tests: true,
 		items: [
 			{
 				name: 'IE 8',
@@ -165,4 +308,63 @@ angular.module('qaChecklist', ['ui.router', 'ngMaterial'])
 			},
 		]
 	}
+})
+
+.service('loginService', function() {
+	this.fields = [
+		{
+			name: 'Email',
+			type: 'email',
+		}, {
+			name: 'Password',
+			type: 'password',
+		}
+	]
+})
+
+.controller('loginController', function($cookieStore, $scope, $state, userService, loginService) {
+	$scope.pageHeading = $state.current.views.header.pageHeading
+
+	$scope.user = {
+		email: '',
+		pass: '',
+	}
+
+	$scope.hideErrorMessage = function() {
+		$scope.errorMessage = ''
+	}
+
+	$scope.login = function() {
+		userService.login.save($scope.user).$promise.then(function(data) {
+			if (!data.errorCode) {
+				$cookieStore.put('auth', data)
+				$state.go('checklists')
+			} else {
+				$scope.errorMessage = data.message
+			}
+		})
+	}
+
+	$scope.loggedIn = function() {
+		return $cookieStore.get('auth') ? true : false
+	}
+
+	$scope.logout = function() {
+		userService.auth.delete($cookieStore.get('auth')).$promise.then(function(data) {
+			if (!data.errorCode) {
+				$cookieStore.remove('auth')
+				$state.go('login')
+			} else {
+				$scope.errorMessage = data.message
+			}
+		})
+	}
+})
+
+.service('userService', function($resource) {
+	var urlBase = 'https://qa-checklist.herokuapp.com/'
+	// var urlBase = 'http://localhost:3000/'
+	this.users = $resource(urlBase + 'api/users/:name', {name: ''}, {})
+	this.login = $resource(urlBase + 'api/login', {email: '@id', password: '@id'}, {})
+	this.auth = $resource(urlBase + 'api/auth', {userId: '@id', token: '@id'}, {})
 })

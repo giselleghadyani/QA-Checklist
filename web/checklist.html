@@ -1,14 +1,26 @@
+<div md-theme="light-blue-dark">
+	<md-toolbar class="md-medium-tall">
+		<h3 class="md-toolbar-tools md-toolbar-tools-bottom">
+			<a ui-sref="checklists">&laquo; Go Back</a>
+		</h3>
+	</md-toolbar>
+
+	<md-content class="md-padding">
+		<md-button class="md-raised md-primary" ng-click="saveChecklist(checklistItems)">Save Checklist</md-button>
+	</md-content>
+</div>
+
 <checklist-items fields="checklistItems.websiteInfo"></checklist-items>
 <checklist-items fields="checklistItems.pageTests"></checklist-items>
 <checklist-items fields="checklistItems.listManagement"></checklist-items>
 
-<md-toolbar md-theme="light-blue-dark">
+<md-toolbar>
 	<h2 class="md-toolbar-tools">Notes</h2>
 </md-toolbar>
 <md-content class="md-padding">
 	<p>Request correct monetization path information to be set in the system from Daniel. Request testing links from Daniel.</p>
 	<p>Forward problems with functionality to Aimee</p>
-	<p>Use Optimizers Manager -> Offers, then ctrl+F, "testing", to change url in prepop link.</p>
+	<p>Use Optimizers Manager -&gt; Offers, then ctrl+F, "testing", to change url in prepop link.</p>
 	<p>Ensure hitpath is set up for correct login link:  Campaigns -> Maintenance ->  Campaign Search for "earlypayday.net login" -> 3. Links & Redirection -> check the Redirectors section of the External URL to ensure /login? Instead of /login.php?</p>
 	<p>Try unexpected values in the form fields to test the form validation errors.  Do they make sense to the user?</p>
 	<p>In ccapp, turn on fakelead buyer for all trees for Affiliate ROI domain for a BBD offer or the actual offer name for a ccapp offer with priority of 0 before testing for a sold lead.</p>
