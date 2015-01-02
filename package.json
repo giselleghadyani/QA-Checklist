@@ -1,7 +1,7 @@
 {
   "name": "qa-checklist",
   "version": "0.0.0",
-  "description": "QA Checklist for new sites w/ The Lead Group.",
+  "description": "QA Checklist for new sites.",
   "main": "web/index.html",
   "scripts": {
     "postinstall": "",
